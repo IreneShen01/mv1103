@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Add Coffee</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+<form id="form1">
+咖啡名稱:<input type="text" name="coffee" value="Extra Espresso" /><br />
+售價:<input type="text" name="sale" value="200" /><br />
+總量:<input type="text" name="total" value="10" /><br />
+供應商:<input type="text" name="supplier" value="150" /><br />
+價格:<input type="text"	name="price" value="300" /><br />
+<input type="submit" value="insert" />
+<input type="button" value="query" />
+</form>
+<div id="mydata"></div>
+<script>
+function display(data){
+		$("#mydata").html(data);
+	}
+function query(e){
+	e.preventDefault();//防止預設行為
+	$.get("CoffeeServlet",display);
+	//因為只是要讀取後端資料，所有用get方法就好
+}
+	
+	function send(evt){
+		evt.preventDefault();//防止預設行為
+        var frmdata=$("form").serialize();
+	//.serialize() 方法創建以標準URL編碼表示的文本字串，其操作對象是代表form元素集合的jQuery對象
+        $.post("InsertCoffeeServlet",frmdata,display);
+        //以上用post的方式傳送
+        //InsertCoffeeServlet為URL
+        //frmdata為資料
+        //display為當回傳資料時執行的函式
+	}
+	
+	function start(){
+	$("#form1").submit(send);
+	$('input[type=button]').click(query);
+	}
+$(document).ready(start);
+
+</script>
+
+</body>
+</html>
